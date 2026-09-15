@@ -42,6 +42,7 @@ Posteriormente, esta infraestructura será utilizada como escenario para realiza
 
 ## Arquitectura inicial
 
+```text
 
   CLIENT
     │
