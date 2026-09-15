@@ -3,5 +3,10 @@
 *.key
 *.pem
 *.crt
+*.ova
+*.vndk
+private/
+secrets/
+whitebox/
 id_rsa
 id_rsa.pub
