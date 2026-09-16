@@ -14,20 +14,7 @@ Posteriormente, esta infraestructura será utilizada como escenario para realiza
 
 ---
 
-## Objetivos del proyecto
-
-- Diseñar y desplegar una infraestructura Linux funcional.
-- Implementar servicios mediante Docker.
-- Desplegar una aplicación web y una base de datos.
-- Configurar acceso remoto seguro mediante SSH.
-- Implementar monitorización y detección mediante Suricata.
-- Registrar y analizar eventos de seguridad.
-- Introducir vulnerabilidades controladas para crear un escenario CTF.
-- Analizar las evidencias generadas durante un incidente de seguridad.
-
----
-
-## Tecnologías
+## Servidor e infraestructura Docker
 
 - Ubuntu Server 22.04 LTS
 - OpenSSH
@@ -44,15 +31,33 @@ Posteriormente, esta infraestructura será utilizada como escenario para realiza
 
 ```text
 
-  CLIENT
-    │
-    ▼
-Ubuntu Server
-    │
-┌───┼───────────┐
-│   │           │
-SSH Suricata   Docker
-                │
-       ┌────────┴────────┐
-       │                 │
-      WEB               DB
+                          CLIENTE
+                            |
+                            |
+                      Ubuntu Server
+                            |
+                    ┌───────┴───────┐
+                    |               |
+                  SSH          WordPress
+                 :22            :8080
+                                    |
+                         ┌──────────┴──────────┐
+                         |                     |
+                  rotborn_public       rotborn_private
+                         |                     |
+                    WordPress       ┌──────────┴──────────┐
+                                    |                     |
+                                 MariaDB          MariaDB Replica
+                                  :3306                 :3306
+                                interno                interno
+
+
+### Tabla de puertos
+
+| Servicio        | Puerto   | Expuesto | Función               |
+|                 |          |          |                       |
+| SSH             | 22/TCP   | Sí       | Administración remota |
+| WordPress       | 8080/TCP | Sí       | Aplicación web        |
+| MariaDB         | 3306/TCP | No       | Base de datos interna |
+| MariaDB Replica | 3306/TCP | No | Réplica de base de datos    |
+
