@@ -27,7 +27,7 @@ Se comprobó que el servicio SSH está activo y funcionando.
 
 También se verificó la conectividad externa mediante:
 
-```bash
+
 ping -c 4 8.8.8.8
 
 La prueba obtuvo un 0 % de pérdida de paquetes.
@@ -396,3 +396,6 @@ MariaDB	3306/TCP	No	Base de datos principal interna
 MariaDB réplica	3306/TCP	No	Réplica interna
 
 La configuración mantiene la base de datos y su réplica protegidas sin exposición directa hacia el exterior, exponiendo únicamente los servicios necesarios.
+
+Para mejorar la seguridad de la infraestructura se ha implementado una segmentación de red mediante dos redes Docker independientes. (Proyecto-final-Rotborn-Studios/docs/Segmentación de redes Docker)
+
