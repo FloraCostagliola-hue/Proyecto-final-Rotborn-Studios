@@ -1,6 +1,9 @@
 services:
   wordpress:
     image: wordpress:7.1.0-php8.3-apache
+    networks:
+      - rotborn_public
+      - rotborn_private
     depends_on:
       - mariadb
     ports:
@@ -10,13 +13,11 @@ services:
       WORDPRESS_DB_NAME: rotborn
       WORDPRESS_DB_USER: rotborn
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - rotborn_net
 
   mariadb:
     image: mariadb:10.11
     networks:
-      - rotborn_net
+      - rotborn_private
     env_file:
       - .env
     volumes:
@@ -26,7 +27,7 @@ services:
   mariadb-replica:
     image: mariadb:10.11
     networks:
-      - rotborn_net
+      - rotborn_private
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
@@ -34,6 +35,10 @@ services:
       - /srv/rotborn/config/mariadb-replica/replica.cnf:/etc/mysql/conf.d/replica.cnf:ro
 
 networks:
-  rotborn_net:
-    name: rotborn_net
+  rotborn_public:
+    name: rotborn_public
+    driver: bridge
+
+  rotborn_private:
+    name: rotborn_private
     driver: bridge
