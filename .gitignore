@@ -5,6 +5,8 @@
 *.crt
 *.ova
 *.vndk
+.exe
+*.exe
 private/
 secrets/
 whitebox/
