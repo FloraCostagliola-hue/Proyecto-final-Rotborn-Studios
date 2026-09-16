@@ -1,0 +1,4 @@
+[mariadb]
+server-id=1
+log-bin=mariadb-bin
+binlog-format=ROW
