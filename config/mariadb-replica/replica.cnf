@@ -1,0 +1,4 @@
+[mariadb]
+server-id=2
+relay-log=mariadb-relay-bin
+read-only=1
