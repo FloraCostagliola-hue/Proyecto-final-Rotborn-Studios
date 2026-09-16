@@ -159,17 +159,7 @@ En este momento `fast.log` se encuentra vacío porque todavía no se ha generado
 
 ---
 
-### Y paramos aquí
-
-Esto documenta **todo lo que acabamos de construir** sin mezclarlo con la prueba.
-
-Después haremos:
-
-> **Kali → ping → Rotborn → Suricata → `fast.log` + `eve.json`**
-
-Y esa será la evidencia que nos permitirá marcar los últimos ✓ de la Fase 4.
-
-## 10.10 Prueba real de detección
+## Prueba real de detección
 
 Para comprobar el funcionamiento real de Suricata se realizó una prueba desde una segunda máquina de la red.
 
