@@ -132,3 +132,20 @@ La infraestructura Docker utiliza dos redes independientes para aislar los compo
 | **Análisis de Puertos** | Nmap + Suricata | Verificación de puertos accesibles y correlación con los registros de tráfico. |
 | **Persistencia de Datos** | `/srv/rotborn/db` | Comprobación de la retención de información de MariaDB tras reinicios. |
 | **Replicación Activa** | MariaDB Primary / Replica | Validación de la consistencia de datos replicados entre servidores. |
+
+---
+
+# Línea Base de Actividad y Monitorización
+
+A partir de las pruebas y auditorías realizadas sobre la infraestructura de **Rotborn Studios**, se establece la siguiente línea base de comportamiento y registro de eventos:
+
+| Acción o Evento | Fuente Detectada / Registrada | Estado | Información Obtenida / Resultado |
+| :--- | :--- | :---: | :--- |
+| **SSH Correcto** | `/var/log/auth.log` | ✅ Sí | Identificación de usuario, dirección IP de origen y aceptación de credenciales. |
+| **SSH Incorrecto** | `/var/log/auth.log` | ✅ Sí | Registro de la IP de origen e intentos de acceso con usuarios no válidos. |
+| **Solicitud Web Válida** | Logs de Apache / Docker | ✅ Sí | Petición HTTP exitosa y código de respuesta `200`. |
+| **Petición Web 404** | Logs de Apache / Docker | ✅ Sí | Solicitud a recursos inexistentes y código de respuesta `404`. |
+| **Estado de Contenedores** | `docker compose ps` / `logs` | ✅ Sí | Verificación del ciclo de vida, estado de los servicios y actividad de WordPress. |
+| **Tráfico ICMP (Ping)** | Suricata (`fast.log` / `eve.json`) | ✅ Sí (Alerta) | Detección de tráfico ICMP, direcciones IP de origen/destino y disparo del SID de la regla. |
+| **Escaneo de Red (Nmap)** | Suricata (`eve.json`) + Nmap | ✅ Sí | Correlación de eventos de red, tráfico TCP y mapeo de puertos accesibles. |
+
