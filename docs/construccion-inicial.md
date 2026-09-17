@@ -186,6 +186,7 @@ Resultado:
 
     rotborn-mariadb-replica-1 → Up
 --
+
 #7.7 Configuración del usuario de replicación
 
 En la MariaDB principal se creó el usuario técnico utilizado por la réplica:
@@ -197,6 +198,7 @@ FLUSH PRIVILEGES;
 
     Nota: Las contraseñas utilizadas no se incluyen en la documentación ni en el repositorio.
 --
+
 #7.8 Obtención de la posición del binlog
 
 En la MariaDB principal se ejecutó:
@@ -213,6 +215,7 @@ Resultado obtenido durante la configuración:
 Estos valores se utilizaron para indicar a la réplica desde qué posición comenzar la replicación.
 
 --
+
 #7.9 Configuración de la réplica
 
 En la MariaDB réplica se configuró la conexión con el servidor principal mediante:
@@ -232,6 +235,7 @@ SQL
 START SLAVE;
 
 --
+
 #7.10 Verificación de la replicación
 
 Se comprobó el estado mediante:
@@ -252,6 +256,7 @@ El resultado confirmó:
 Esto confirma que la réplica está conectada al servidor principal, procesa correctamente los cambios y no presenta errores.
 
 --
+
 #7.11 Prueba real de replicación
 
 Para comprobar que la replicación funcionaba realmente se creó una tabla de prueba en la base de datos principal:
@@ -280,6 +285,7 @@ Resultado en la réplica:
 La prueba confirma que los cambios realizados en la MariaDB principal son replicados automáticamente en la MariaDB réplica.
 
 --
+
 #7.12 Limpieza de la prueba
 
 Una vez verificada la replicación, se eliminó la tabla utilizada para la prueba desde la base de datos principal:
@@ -303,6 +309,7 @@ Resultado: Empty set. Esto confirmó que la eliminación realizada en la base de
 Se configuró WordPress como aplicación web de la infraestructura mediante Docker Compose.
 
 --
+
 #8.1 Configuración en Docker Compose
 
 Se definió el servicio wordpress en /srv/rotborn/docker-compose.yml.
@@ -367,6 +374,7 @@ Se completó la instalación utilizando:
 
 La instalación finalizó correctamente, confirmando que WordPress se comunica exitosamente con la MariaDB principal.
 --
+
 ##9. Comprobación de persistencia de la base de datos
 
 Una vez reiniciados los contenedores, se comprobó que los datos de la base de datos de WordPress seguían disponibles.
@@ -400,6 +408,7 @@ Resultado: 12
 Los datos se almacenan mediante el bind mount /srv/rotborn/db → /var/lib/mysql, garantizando almacenamiento persistente.
 
 --
+
 ##10. Comprobación de puertos y servicios
 
 Se verificaron los puertos utilizados tanto por la máquina virtual como por los contenedores Docker mediante docker compose ps:
