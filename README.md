@@ -120,18 +120,18 @@ La infraestructura Docker utiliza dos redes independientes para aislar los compo
 ## Mapa de Evidencias
 
 | Acción o Evento | Fuente / Ubicación | Información Obtenida / Resultado |
-| :--- | :--- | :--- |
-| **Login SSH correcto** | `/var/log/auth.log` | Identificación de usuario, IP de origen y aceptación de clave/credencial. |
-| **Login SSH incorrecto** | `/var/log/auth.log` | Registro de intentos de acceso fallidos o no autorizados. |
-| **Solicitud Web exitosa** | Logs de Apache / Docker | Petición HTTP recibida con código de respuesta `200`. |
-| **Error Web 404** | Logs de Apache / Docker | Petición a recursos inexistentes con código de respuesta `404`. |
-| **Estado de Contenedores** | `docker compose ps` | Comprobación del ciclo de vida y estado operativo de los servicios. |
-| **Logs de Contenedores** | `docker logs` | Trazas de ejecución y depuración de las aplicaciones internas. |
-| **Tráfico ICMP / Ping** | `/var/log/suricata/fast.log` | Alerta disparada mediante la regla personalizada de Suricata. |
-| **Eventos de Red Global** | `/var/log/suricata/eve.json` | Flujos de red detallados y telemetría capturada por el IDS. |
-| **Análisis de Puertos** | Nmap + Suricata | Verificación de puertos accesibles y correlación con los registros de tráfico. |
-| **Persistencia de Datos** | `/srv/rotborn/db` | Comprobación de la retención de información de MariaDB tras reinicios. |
-| **Replicación Activa** | MariaDB Primary / Replica | Validación de la consistencia de datos replicados entre servidores. |
+|:--|:--|:--|
+| Login SSH correcto | `/var/log/auth.log` | Identificación del usuario, IP de origen y aceptación de credenciales. |
+| Login SSH incorrecto | `/var/log/auth.log` | Registro de intentos de acceso con usuarios o credenciales no válidos. |
+| Solicitud Web exitosa | `docker logs rotborn-wordpress-1` | Peticiones HTTP procesadas correctamente y códigos de respuesta. |
+| Error Web 404 | `docker logs rotborn-wordpress-1` | Peticiones a recursos inexistentes y código HTTP 404. |
+| Estado de Contenedores | `docker compose ps` | Estado operativo de WordPress, MariaDB Primary y MariaDB Replica. |
+| Logs de Contenedores | `docker logs` | Actividad y registros generados por los servicios Docker. |
+| Tráfico ICMP / Ping | `/var/log/suricata/fast.log` | Alertas generadas por la regla personalizada de ICMP. |
+| Eventos de Red | `/var/log/suricata/eve.json` | Flujos y tráfico de red observados por Suricata, incluidos eventos sin alerta. |
+| Análisis de Puertos | Nmap + `/var/log/suricata/eve.json` | Puertos accesibles y tráfico generado durante el escaneo controlado. |
+| Persistencia de Datos | `/srv/rotborn/db` y `/srv/rotborn/db-replica` | Almacenamiento persistente utilizado por las bases de datos. |
+| Replicación Activa | MariaDB Primary / Replica | Comprobación de la sincronización entre las dos bases de datos. |
 
 ---
 
