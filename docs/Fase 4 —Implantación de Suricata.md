@@ -242,20 +242,4 @@ Por tanto, la implantación de Suricata y la regla de detección propia han sido
 
 ---
 
-## Resumen de la Fase 4
 
-- ✅ Suricata instalado
-- ✅ Servicio activo
-- ✅ Interfaz correcta: `enp0s3`
-- ✅ `HOME_NET` definido: `10.21.4.0/24`
-- ✅ Configuración validada
-- ✅ `local.rules` configurado
-- ✅ Regla propia creada
-- ✅ Tráfico de prueba generado desde Windows
-- ✅ Alerta real detectada
-- ✅ `fast.log` comprobado
-- ✅ `eve.json` comprobado
-
-> **Una cosa importante:** no necesitamos documentar todos los mensajes internos de instalación ni cada comando que ejecutamos durante el diagnóstico. Este bloque deja registrado **lo que Ironhack evalúa y la evidencia que demuestra que funciona**.
-
-Después de pegarlo y guardarlo, podemos pasar a **Fase 5 — pruebas de detección y línea base**.
