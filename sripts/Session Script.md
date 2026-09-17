@@ -1,4 +1,4 @@
-# Rotborn Studios — Session Script de comandos
+# Rotborn Studios — Session Script 
 
 Guion cronológico de los comandos utilizados durante la construcción y las pruebas de Rotborn Studios.
 
