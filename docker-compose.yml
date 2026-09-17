@@ -9,6 +9,7 @@ services:
     ports:
       - "8080:80"
     environment:
+      TZ: Europe/Madrid
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: rotborn
       WORDPRESS_DB_USER: rotborn
