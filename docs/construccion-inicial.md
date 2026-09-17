@@ -31,8 +31,9 @@ También se verificó la conectividad externa mediante:
 ping -c 4 8.8.8.8
 
 La prueba obtuvo un 0 % de pérdida de paquetes.
+---
 
-3. Docker Engine
+##3. Docker Engine
 
 Se instaló Docker Engine para proporcionar la plataforma de contenedores utilizada por los servicios de la infraestructura.
 
@@ -42,8 +43,9 @@ Plaintext
 Docker 29.1.3
 
 Se comprobó que el servicio Docker está activo y funcionando correctamente.
+--
 
-4. Docker Compose
+##4. Docker Compose
 
 Se instaló Docker Compose para gestionar los diferentes servicios de la infraestructura mediante un archivo de configuración reproducible.
 
@@ -57,7 +59,9 @@ Bash
 
 docker compose version
 
-5. Directorio del proyecto
+--
+
+##5. Directorio del proyecto
 
 Se creó el directorio principal del proyecto:
 Bash
@@ -70,7 +74,9 @@ El directorio pertenece al usuario zadmin y será utilizado para almacenar los a
 Se creó un archivo .env para almacenar las credenciales utilizadas por los servicios de Docker.
 
 
-7. Infraestructura Docker y bases de datos
+--
+
+##7. Infraestructura Docker y bases de datos
 
 Se configuró Docker Compose para desplegar la infraestructura de base de datos del proyecto.
 
@@ -80,8 +86,8 @@ Se creó una red privada denominada rotborn_net para permitir la comunicación e
 Bash
 
 docker network ls
-
-7.2 Directorios para persistencia
+--
+#7.2 Directorios para persistencia
 
 Se crearon directorios independientes para almacenar los datos de las dos instancias MariaDB:
 Bash
@@ -90,7 +96,9 @@ sudo mkdir -p /srv/rotborn/db
 sudo mkdir -p /srv/rotborn/db-replica
 
 Estos directorios se utilizan como bind mounts para mantener los datos aunque los contenedores sean recreados.
-7.3 Configuración de MariaDB principal
+-
+
+#7.3 Configuración de MariaDB principal
 
 Se creó el archivo /srv/rotborn/config/mariadb/primary.cnf con la siguiente configuración:
 Ini, TOML
@@ -101,7 +109,8 @@ log-bin=mariadb-bin
 binlog-format=ROW
 
 El parámetro server-id identifica de forma única a la instancia principal y log-bin permite registrar los cambios realizados en la base de datos para su replicación.
-7.4 Configuración de MariaDB réplica
+--
+#7.4 Configuración de MariaDB réplica
 
 Se creó el archivo /srv/rotborn/config/mariadb-replica/replica.cnf con la configuración:
 Ini, TOML
@@ -113,7 +122,7 @@ read-only=1
 
 El server-id permite identificar la réplica y el relay-log almacena temporalmente los cambios recibidos desde el servidor principal.
 
-7.5 Configuración en Docker Compose
+#7.5 Configuración en Docker Compose
 
 Se creó el archivo /srv/rotborn/docker-compose.yml. Actualmente se han definido los siguientes servicios:
 
@@ -158,7 +167,8 @@ docker compose config
 
 La configuración fue validada correctamente.
 
-7.6 Despliegue de las bases de datos
+-
+#7.6 Despliegue de las bases de datos
 
 Se iniciaron los servicios mediante Docker Compose:
 Bash
@@ -175,8 +185,8 @@ Resultado:
     rotborn-mariadb-1 → Up
 
     rotborn-mariadb-replica-1 → Up
-
-7.7 Configuración del usuario de replicación
+--
+#7.7 Configuración del usuario de replicación
 
 En la MariaDB principal se creó el usuario técnico utilizado por la réplica:
 SQL
@@ -186,8 +196,8 @@ GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'%';
 FLUSH PRIVILEGES;
 
     Nota: Las contraseñas utilizadas no se incluyen en la documentación ni en el repositorio.
-
-7.8 Obtención de la posición del binlog
+--
+#7.8 Obtención de la posición del binlog
 
 En la MariaDB principal se ejecutó:
 SQL
@@ -201,7 +211,9 @@ Resultado obtenido durante la configuración:
     Position: 802
 
 Estos valores se utilizaron para indicar a la réplica desde qué posición comenzar la replicación.
-7.9 Configuración de la réplica
+
+--
+#7.9 Configuración de la réplica
 
 En la MariaDB réplica se configuró la conexión con el servidor principal mediante:
 SQL
@@ -219,7 +231,8 @@ SQL
 
 START SLAVE;
 
-7.10 Verificación de la replicación
+--
+#7.10 Verificación de la replicación
 
 Se comprobó el estado mediante:
 SQL
@@ -237,7 +250,9 @@ El resultado confirmó:
     Last_Error: (vacío)
 
 Esto confirma que la réplica está conectada al servidor principal, procesa correctamente los cambios y no presenta errores.
-7.11 Prueba real de replicación
+
+--
+#7.11 Prueba real de replicación
 
 Para comprobar que la replicación funcionaba realmente se creó una tabla de prueba en la base de datos principal:
 SQL
@@ -263,7 +278,9 @@ Resultado en la réplica:
     mensaje: Prueba de replicacion Rotborn
 
 La prueba confirma que los cambios realizados en la MariaDB principal son replicados automáticamente en la MariaDB réplica.
-7.12 Limpieza de la prueba
+
+--
+#7.12 Limpieza de la prueba
 
 Una vez verificada la replicación, se eliminó la tabla utilizada para la prueba desde la base de datos principal:
 SQL
@@ -278,10 +295,15 @@ USE rotborn;
 SHOW TABLES;
 
 Resultado: Empty set. Esto confirmó que la eliminación realizada en la base de datos principal también fue aplicada correctamente en la réplica.
-8. Aplicación web — WordPress
+
+--
+
+##8. Aplicación web — WordPress
 
 Se configuró WordPress como aplicación web de la infraestructura mediante Docker Compose.
-8.1 Configuración en Docker Compose
+
+--
+#8.1 Configuración en Docker Compose
 
 Se definió el servicio wordpress en /srv/rotborn/docker-compose.yml.
 
@@ -305,8 +327,9 @@ La configuración se validó mediante:
 Bash
 
 docker compose config
+--
 
-8.2 Despliegue de WordPress
+#8.2 Despliegue de WordPress
 
 WordPress se inició mediante:
 Bash
@@ -325,8 +348,9 @@ Resultado:
     rotborn-mariadb-replica-1 → Up
 
     rotborn-wordpress-1 → Up
+--
 
-8.3 Instalación de WordPress
+#8.3 Instalación de WordPress
 
 El servicio web es accesible desde:
 Plaintext
@@ -342,7 +366,8 @@ Se completó la instalación utilizando:
     Usuario administrador: rotborn_admin
 
 La instalación finalizó correctamente, confirmando que WordPress se comunica exitosamente con la MariaDB principal.
-9. Comprobación de persistencia de la base de datos
+--
+##9. Comprobación de persistencia de la base de datos
 
 Una vez reiniciados los contenedores, se comprobó que los datos de la base de datos de WordPress seguían disponibles.
 
@@ -373,7 +398,9 @@ SELECT COUNT(*) AS tablas FROM information_schema.tables WHERE table_schema = 'r
 Resultado: 12
 
 Los datos se almacenan mediante el bind mount /srv/rotborn/db → /var/lib/mysql, garantizando almacenamiento persistente.
-10. Comprobación de puertos y servicios
+
+--
+##10. Comprobación de puertos y servicios
 
 Se verificaron los puertos utilizados tanto por la máquina virtual como por los contenedores Docker mediante docker compose ps:
 
