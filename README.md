@@ -1,7 +1,7 @@
 # Rotborn Studios
 
 * **Nombre del proyecto:** Rotborn Studios
-* **Integrante:** Flora Costagliola [cite: topic-Demographics Information]
+* **Integrante:** Flora Costagliola 
 * **Modalidad:** Individual
 * **Temática:** Ciberseguridad aplicada a la infraestructura de una empresa ficticia de desarrollo de videojuegos.
 * **Tecnologías:** Ubuntu Server 22.04.5 LTS, OpenSSH, Docker, Docker Compose, WordPress, MariaDB, Suricata y Nmap.
