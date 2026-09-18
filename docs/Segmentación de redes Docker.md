@@ -251,9 +251,9 @@ La separación de redes se complementa con la configuración de puertos:
 
 | Servicio | Puerto | Exposición | Función |
 |:--|:---:|:---:|:--|
-| WordPress | `8080 → 80` | ✅ Expuesto | Aplicación web |
-| MariaDB Primary | `3306` | ❌ No publicado | Base de datos |
-| MariaDB Replica | `3306` | ❌ No publicado | Réplica de base de datos |
+| WordPress | `8080 → 80` | Expuesto | Aplicación web |
+| MariaDB Primary | `3306` |  No publicado | Base de datos |
+| MariaDB Replica | `3306` |  No publicado | Réplica de base de datos |
 
 Por tanto:
 
