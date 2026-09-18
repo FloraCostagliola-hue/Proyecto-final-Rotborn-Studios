@@ -1,7 +1,7 @@
 # Segmentación de redes Docker
 
 > **Proyecto:** Rotborn Studios  
-> **Objetivo:** separar la exposición de la aplicación web de la comunicación interna con las bases de datos.
+
 
 ---
 
