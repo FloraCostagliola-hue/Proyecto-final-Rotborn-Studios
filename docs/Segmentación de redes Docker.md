@@ -1,50 +1,124 @@
-### Segmentación de redes Docker
+# Segmentación de redes Docker
 
-Para mejorar la seguridad de la infraestructura se ha implementado una segmentación de red mediante dos redes Docker independientes.
+> **Proyecto:** Rotborn Studios  
+> **Objetivo:** separar la exposición de la aplicación web de la comunicación interna con las bases de datos.
 
-La arquitectura utiliza:
+---
 
-- `rotborn_public`: red destinada a la exposición de la aplicación web.
-- `rotborn_private`: red interna utilizada para la comunicación entre WordPress y las bases de datos.
+## 1. Arquitectura de red
 
-La distribución de los servicios es la siguiente:
+Para mejorar la seguridad de la infraestructura se implementó una segmentación mediante **dos redes Docker independientes**:
 
-| Servicio  | `rotborn_public` | `rotborn_private` |
-|---        |---               |---                |
-| WordPress |        Sí        |         Sí        |
-| MariaDB   |        No        |         Sí        |
-| MariaDB   |        No        |         Sí        |
-| Replica
-De esta forma, WordPress dispone de acceso a ambas redes, mientras que MariaDB y MariaDB Replica permanecen únicamente en la red privada.
+| Red | Finalidad |
+|:--|:--|
+| `rotborn_public` | Red destinada a la exposición de la aplicación web. |
+| `rotborn_private` | Red interna destinada a la comunicación entre WordPress y las bases de datos. |
 
+### Distribución de los servicios
 
-#### Configuración de las redes
+| Servicio | `rotborn_public` | `rotborn_private` |
+|:--|:---:|:---:|
+| WordPress |  Sí |  Sí |
+| MariaDB Primary | ❌ No |  Sí |
+| MariaDB Replica | ❌ No |  Sí |
 
-1)Antes de modificar docker-compose.yml creamos una copia de seguredad:
+De esta forma, **WordPress dispone de acceso a ambas redes**, mientras que MariaDB Primary y MariaDB Replica permanecen únicamente en la red privada.
 
-"cp docker-compose.yml docker-compose.yml.backup"
+```text
+                         RED EXTERNA
+                              │
+                            :8080
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │    WordPress     │
+                    │                  │
+                    │ public + private │
+                    └────────┬─────────┘
+                             │
+                       rotborn_private
+                             │
+                    ┌────────┴─────────┐
+                    │                  │
+                    ▼                  ▼
+             ┌─────────────┐    ┌─────────────┐
+             │   MariaDB   │    │   MariaDB   │
+             │   Primary   │───▶│   Replica   │
+             │    :3306    │    │    :3306    │
+             └─────────────┘    └─────────────┘
+```
 
-2) Modificamos docker-compose.yml con nano sostituendo la primera network creada:
+---
 
-networks:
-  - rotborn_net
+## 2. Configuración de las redes
 
-"services:
+### 2.1 Copia de seguridad
+
+Antes de modificar `docker-compose.yml`, se realizó una copia de seguridad:
+
+```bash
+cp docker-compose.yml docker-compose.yml.backup
+```
+
+Esto permitió conservar una versión anterior de la configuración en caso de necesitar recuperarla.
+
+---
+
+### 2.2 Configuración de WordPress
+
+Se modificó el servicio `wordpress` para conectarlo a las dos redes:
+
+```yaml
+services:
   wordpress:
     image: wordpress:7.1.0-php8.3-apache
     networks:
-       - rotborn_public
-       - rotborn_private"
+      - rotborn_public
+      - rotborn_private
+```
 
-3) Modificamos la red rotborn_net a rotborn_private en :
+De esta forma, WordPress puede:
 
-"mariadb:
-   image: mariadb:10.11
-   networks:
-     - rotborn_private" 
-          
-4) modificamos el nombre de la red:
+- recibir conexiones desde la red pública;
+- comunicarse con MariaDB a través de la red privada.
 
+---
+
+### 2.3 Configuración de MariaDB Primary
+
+Se modificó el servicio `mariadb` para utilizar únicamente la red privada:
+
+```yaml
+mariadb:
+  image: mariadb:10.11
+  networks:
+    - rotborn_private
+```
+
+MariaDB Primary no está conectado a `rotborn_public`.
+
+---
+
+### 2.4 Configuración de MariaDB Replica
+
+La réplica también utiliza exclusivamente la red privada:
+
+```yaml
+mariadb-replica:
+  image: mariadb:10.11
+  networks:
+    - rotborn_private
+```
+
+Esto mantiene la comunicación entre las bases de datos dentro de la red interna.
+
+---
+
+### 2.5 Definición de las redes
+
+Finalmente se definieron las dos redes en `docker-compose.yml`:
+
+```yaml
 networks:
   rotborn_public:
     name: rotborn_public
@@ -53,129 +127,262 @@ networks:
   rotborn_private:
     name: rotborn_private
     driver: bridge
+```
 
-5) comprovamos con 
+Las redes utilizan el controlador `bridge` de Docker.
 
-"docker compose config"
+---
 
-6) creamos y levantamos:
+## 3. Validación de la configuración
 
-zadmin@rotborn-server:/srv/rotborn$ docker compose up -d
-[+] Running 5/5
- ✔ Network rotborn_public               Created                                                                                                                                                             1.1s
- ✔ Network rotborn_private              Created                                                                                                                                                             0.3s
- ✔ Container rotborn-mariadb-replica-1  Started                                                                                                                                                             4.9s
- ✔ Container rotborn-mariadb-1          Started                                                                                                                                                             5.1s
- ✔ Container rotborn-wordpress-1        Started                                                                                                                                                             6.4s
-zadmin@rotborn-server:/srv/rotborn$
+Una vez realizadas las modificaciones, se comprobó que el archivo Compose fuera válido:
 
-7) comprobamos si esta en up:
+```bash
+docker compose config
+```
 
-zadmin@rotborn-server:/srv/rotborn$ docker compose ps
-NAME                        IMAGE                           COMMAND                  SERVICE           CREATED              STATUS              PORTS
-rotborn-mariadb-1           mariadb:10.11                   "docker-entrypoint.s…"   mariadb           About a minute ago   Up About a minute   3306/tcp
-rotborn-mariadb-replica-1   mariadb:10.11                   "docker-entrypoint.s…"   mariadb-replica   About a minute ago   Up About a minute   3306/tcp
-rotborn-wordpress-1         wordpress:7.1.0-php8.3-apache   "docker-entrypoint.s…"   wordpress         About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
-zadmin@rotborn-server:/srv/rotborn$
+La configuración se cargó correctamente.
 
-Tenemos exactamente la arquitectura que queríamos:
+---
+
+## 4. Creación y puesta en marcha
+
+Se levantó la infraestructura:
+
+```bash
+docker compose up -d
+```
+
+### Resultado obtenido
 
 ```text
-Internet / red externa
-        │
-        │ :8080
-        ▼
-┌─────────────────┐
-│    WordPress    │
-│                 │
-│ public + private│
-└────────┬────────┘
-         │
-    RED PRIVADA
-         │
-    ┌────┴─────┐
-    ▼          ▼
- MariaDB    MariaDB
- primaria    réplica
- :3306        :3306
+[+] Running 5/5
+ ✔ Network rotborn_public               Created
+ ✔ Network rotborn_private              Created
+ ✔ Container rotborn-mariadb-replica-1  Started
+ ✔ Container rotborn-mariadb-1          Started
+ ✔ Container rotborn-wordpress-1        Started
+```
 
-Y la salida confirma algo muy importante:
+A continuación se comprobó el estado de los servicios:
 
-MariaDB           3306/tcp
-MariaDB Replica   3306/tcp
-WordPress         0.0.0.0:8080->80/tcp
+```bash
+docker compose ps
+```
 
-Es decir:
+### Resultado obtenido
 
-WordPress → accesible desde fuera por 8080 
-MariaDB → no publicado hacia la VM/Internet 
-Réplica → no publicada hacia la VM/Internet 
-WordPress ↔ MariaDB → mediante rotborn_private 
+```text
+NAME                        IMAGE                           STATUS
+rotborn-mariadb-1           mariadb:10.11                   Up
+rotborn-mariadb-replica-1   mariadb:10.11                   Up
+rotborn-wordpress-1         wordpress:7.1.0-php8.3-apache   Up
+```
 
-8) Vamos a confirmar que las redes realmente tienen los contenedores correctos.
-zadmin@rotborn-server:/srv/rotborn$ docker network inspect rotborn_public
+WordPress quedó publicado mediante:
 
-Containers": {
-            "ced4300d27e3a837ce248ccf5f09b8bbd9495c4ff538a011efec3d9498e0ffcc": {
-                "Name": "rotborn-wordpress-1",
-                "EndpointID": "6b32902916bf3d6f701f470ebdd77539a0115bd45bf8dbed918fd4137ed8f2d8",
-                "MacAddress": "1e:74:d9:3d:75:c0",
-                "IPv4Address": "172.19.0.2/16",
-                "IPv6Address": ""
+```text
+0.0.0.0:8080 -> 80/tcp
+```
 
+Mientras que MariaDB Primary y MariaDB Replica mantienen el puerto `3306/tcp` únicamente dentro de Docker.
 
-zadmin@rotborn-server:/srv/rotborn$ docker network inspect rotborn_private
+---
 
-     "com.docker.compose.version": "2.40.3"
-        },
-        "Containers": {
-            "74be4dbbdc00ddcbceb21d5023a39b204712afb44e1a403e12a2a7d0ee8712c3": {
-                "Name": "rotborn-mariadb-1",
-                "EndpointID": "06a685ce7e4ef2c7f0287020b5e430b6ead605aed3386fe46f70fcd35b034ba5",
-                "MacAddress": "4a:a3:15:76:cb:68",
-                "IPv4Address": "172.20.0.3/16",
-                "IPv6Address": ""
-            },
-            "97c704f66d14ab9e631b529caeba3801003b58f39b690d2c74567670d0695c22": {
-                "Name": "rotborn-mariadb-replica-1",
-                "EndpointID": "f263d8825296b091e299a0b5924f869ebd40d3d0ddb5665543ef3e59d1a0ae22",
-                "MacAddress": "d2:62:d5:3e:79:14",
-                "IPv4Address": "172.20.0.2/16",
-                "IPv6Address": ""
-            },
-            "ced4300d27e3a837ce248ccf5f09b8bbd9495c4ff538a011efec3d9498e0ffcc": {
-                "Name": "rotborn-wordpress-1",
-                "EndpointID": "bb8ef03ac38f63ba297a9ec266787643ec5c1c5a8c97cc671b7a8e97ff2cbe6f",
-                "MacAddress": "42:e9:35:44:12:67",
-                "IPv4Address": "172.20.0.4/16",
-                "IPv6Address": ""
+## 5. Comprobación de `rotborn_public`
 
-9) Ahora comprobamos que la réplica MariaDB sigue funcionando después del cambio de red.
+Se comprobó el contenido de la red pública:
 
+```bash
+docker network inspect rotborn_public
+```
+
+### Resultado obtenido
+
+WordPress aparece conectado a esta red con la dirección:
+
+```text
+172.19.0.2/16
+```
+
+La red pública contiene únicamente:
+
+```text
+rotborn-wordpress-1
+```
+
+Esto confirma que MariaDB Primary y MariaDB Replica **no están conectadas a la red pública**.
+
+---
+
+## 6. Comprobación de `rotborn_private`
+
+Se comprobó la red privada:
+
+```bash
+docker network inspect rotborn_private
+```
+
+### Resultado obtenido
+
+Los servicios conectados fueron:
+
+| Contenedor | Dirección Docker |
+|:--|:--|
+| `rotborn-mariadb-1` | `172.20.0.3/16` |
+| `rotborn-mariadb-replica-1` | `172.20.0.2/16` |
+| `rotborn-wordpress-1` | `172.20.0.4/16` |
+
+Por tanto, la red privada contiene los tres servicios necesarios para la comunicación interna:
+
+```text
+rotborn_private
+       │
+       ├── WordPress
+       ├── MariaDB Primary
+       └── MariaDB Replica
+```
+
+---
+
+## 7. Puertos y exposición
+
+La separación de redes se complementa con la configuración de puertos:
+
+| Servicio | Puerto | Exposición | Función |
+|:--|:---:|:---:|:--|
+| WordPress | `8080 → 80` | ✅ Expuesto | Aplicación web |
+| MariaDB Primary | `3306` | ❌ No publicado | Base de datos |
+| MariaDB Replica | `3306` | ❌ No publicado | Réplica de base de datos |
+
+Por tanto:
+
+```text
+Exterior
+   │
+   ▼
+:8080
+   │
+   ▼
+WordPress
+   │
+   ▼
+rotborn_private
+   │
+   ├── MariaDB Primary :3306
+   │
+   └── MariaDB Replica :3306
+```
+
+---
+
+## 8. Comprobación de la replicación
+
+Después de modificar la arquitectura de red, se comprobó que la replicación de MariaDB continuaba funcionando.
+
+Se accedió a la réplica:
+
+```bash
 docker exec -it rotborn-mariadb-replica-1 mariadb -uroot -p
-Enter password:
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 6
-Server version: 10.11.19-MariaDB-ubu2204 mariadb.org binary distribution
+```
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+Dentro de MariaDB:
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+```sql
+SHOW SLAVE STATUS\G
+```
 
-MariaDB [(none)]> SHOW SLAVE STATUS\G
+### Resultado obtenido
 
-Resultado:
+```text
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+Slave_IO_State: Waiting for master to send event
+Master_Host: mariadb
+Master_Port: 3306
+```
 
-MariaDB [(none)]> SHOW SLAVE STATUS\G
-*************************** 1. row ***************************
-   
-         Slave_IO_Running: Yes
-         Slave_SQL_Running: Yes
+Esto confirma que la réplica puede comunicarse con MariaDB Primary mediante la red privada utilizando:
 
-        Y :
+```text
+Host: mariadb
+Puerto: 3306
+```
 
-         Slave_IO_State: Waiting for master to send event
-         Master_Host: mariadb
-         Master_Port: 3306
+---
 
-Esto confirma que la réplica puede comunicarse con la MariaDB principal por la red privada, usando el nombre Docker mariadb y el puerto interno 3306.
+## 9. Resultado final
+
+La segmentación implementada quedó de la siguiente manera:
+
+```text
+                    RED EXTERNA
+                         │
+                       :8080
+                         │
+                         ▼
+                ┌────────────────┐
+                │    WordPress   │
+                └───────┬────────┘
+                        │
+              ┌─────────┴─────────┐
+              │ rotborn_private   │
+              │                   │
+              ▼                   ▼
+       ┌─────────────┐     ┌─────────────┐
+       │   MariaDB   │────▶│   MariaDB   │
+       │   Primary   │     │   Replica   │
+       └─────────────┘     └─────────────┘
+```
+
+### Comprobaciones realizadas
+
+- `rotborn_public` creada correctamente.
+- `rotborn_private` creada correctamente.
+-  WordPress conectado a ambas redes.
+-  MariaDB Primary conectada únicamente a la red privada.
+-  MariaDB Replica conectada únicamente a la red privada.
+-  WordPress publicado en el puerto `8080`.
+-  MariaDB no publicado hacia el exterior.
+-  MariaDB Replica no publicada hacia el exterior.
+-  Replicación MariaDB funcionando después del cambio de red.
+
+---
+
+## 10. Comandos utilizados
+
+### Configuración
+
+```bash
+cp docker-compose.yml docker-compose.yml.backup
+docker compose config
+```
+
+### Despliegue
+
+```bash
+docker compose up -d
+docker compose ps
+```
+
+### Comprobación de redes
+
+```bash
+docker network ls
+docker network inspect rotborn_public
+docker network inspect rotborn_private
+```
+
+### Comprobación de replicación
+
+```bash
+docker exec -it rotborn-mariadb-replica-1 mariadb -uroot -p
+```
+
+```sql
+SHOW SLAVE STATUS\G
+```
+
+---
+
+> **Conclusión:** la infraestructura Docker quedó segmentada en una red pública para WordPress y una red privada para la comunicación interna con las bases de datos, manteniendo MariaDB Primary y MariaDB Replica fuera de la exposición directa.
