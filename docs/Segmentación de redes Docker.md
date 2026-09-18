@@ -19,8 +19,8 @@ Para mejorar la seguridad de la infraestructura se implementó una segmentación
 | Servicio | `rotborn_public` | `rotborn_private` |
 |:--|:---:|:---:|
 | WordPress |  Sí |  Sí |
-| MariaDB Primary | ❌ No |  Sí |
-| MariaDB Replica | ❌ No |  Sí |
+| MariaDB Primary |  No |  Sí |
+| MariaDB Replica |  No |  Sí |
 
 De esta forma, **WordPress dispone de acceso a ambas redes**, mientras que MariaDB Primary y MariaDB Replica permanecen únicamente en la red privada.
 
