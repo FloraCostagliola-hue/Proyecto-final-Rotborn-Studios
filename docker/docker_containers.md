@@ -111,7 +111,7 @@ La infraestructura garantiza la retención de la información separando los dato
 * `/srv/rotborn/db` (Principal)
 * `/srv/rotborn/db-replica` (Réplica)
 
-> **⚠️ Advertencias importantes:**
+> ** Advertencias importantes:**
 > * Detener o reiniciar los servicios con `docker compose down` y `docker compose up -d` **no elimina** los datos.
 > * **NO ejecutar** `docker compose down -v` bajo ningún concepto si se desean conservar los volúmenes de datos.
 > * **NO eliminar manualmente** las carpetas físicas en `/srv/rotborn/db` o `/srv/rotborn/db-replica` para evitar corrupciones en las bases de datos.
