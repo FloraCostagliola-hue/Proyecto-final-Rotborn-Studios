@@ -1,0 +1,2 @@
+alert icmp any any -> $HOME_NET any (msg:"MF0488 - ICMP detectado"; sid:1000001; rev:1;)
+alert tcp any any -> $HOME_NET 443 (msg:"MF0489 Fase 4 - Conexion HTTPS observada"; flags:S; sid:1000002; rev:1;)
