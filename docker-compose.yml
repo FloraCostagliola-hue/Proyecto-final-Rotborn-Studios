@@ -6,8 +6,6 @@ services:
       - rotborn_private
     depends_on:
       - mariadb
-    ports:
-      - "8080:80"
     environment:
       TZ: Europe/Madrid
       WORDPRESS_DB_HOST: mariadb
@@ -34,6 +32,21 @@ services:
     volumes:
       - /srv/rotborn/db-replica:/var/lib/mysql
       - /srv/rotborn/config/mariadb-replica/replica.cnf:/etc/mysql/conf.d/replica.cnf:ro
+
+  reverse-proxy:
+    image: nginx:stable
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - rotborn_public
+    depends_on:
+      - wordpress
+    volumes:
+      - /srv/rotborn/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /srv/rotborn/nginx/00-log-format.conf:/etc/nginx/conf.d/00-log-format.conf:ro
+      - /etc/ssl/certs/servidor.crt:/etc/nginx/certs/servidor.crt:ro
+      - /etc/ssl/private/servidor.key:/etc/nginx/certs/servidor.key:ro
 
 networks:
   rotborn_public:
