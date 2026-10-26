@@ -1,5 +1,5 @@
 
-#!/bin/bash
+#!/bin/bash 
 
 # ==========================================
 # ROTBORN STUDIOS - INICIO DEL LABORATORIO
