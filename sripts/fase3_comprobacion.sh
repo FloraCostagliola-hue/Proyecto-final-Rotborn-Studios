@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Requiere DOMINIO, IP_SERVIDOR y CA_CERT definidos (ver "Variables").
+# Requiere: DOMINIO, IP_SERVIDOR y CA_CERT definidos (ver "Variables").
 set -u
 : "${DOMINIO:?}" "${IP_SERVIDOR:?}" "${CA_CERT:?}"
 
