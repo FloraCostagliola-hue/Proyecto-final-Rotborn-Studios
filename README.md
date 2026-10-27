@@ -79,12 +79,14 @@ GitHub.
 
 Documentación de la arquitectura del servidor, la segmentación de redes Docker, la preparación de registros y la implantación de Suricata para detectar amenazas.
 
-- [Fase 0 — Arquitectura](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/00-Arquitectura.md)
-- [Fase 1 — Construcción inicial](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/01-costruccion-inicial.md)
-- [Fase 2 — Segmentación de redes Docker](./docs/02-segmentacion%20de%20redes%20Docker.md)
-- [Fase 3 — Preparación de registros](./docs/Fase%203%20—%20Preparación%20de%20registros.md)
-- [Fase 4 — Implantación de Suricata](./docs/Fase%204%20—Implantación%20de%20Suricata.md)
-- [Fase 5 — Entrega final](./docs/mf0489/fase5-entrega-final.md)
+
+1. [Fase 0 — Arquitectura](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/00-Arquitectura.md)
+2. [Fase 1 — Construcción inicial](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/01-construccion-inicial.md)
+3. [Fase 2 — Segmentación de redes Docker](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/02-Segmentaci%C3%B3n%20de%20redes%20Docker.md)
+4. [Fase 3 — Preparación de registros](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/Fase%203%20%E2%80%94%20Preparaci%C3%B3n%20de%20registros.md)
+5. [Fase 4 — Implantación de Suricata](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/Fase%204%20%E2%80%94Implantaci%C3%B3n%20de%20Suricata.md)
+6. [Fase 5 — Pruebas de detección](https://github.com/FloraCostagliola-hue/Proyecto-final-Rotborn-Studios/blob/main/docs/Fase%205%20%E2%80%94%20Pruebas%20de%20detecci%C3%B3.md)
+
 
 ### ☣️ MF0489 — Zona segura: PKI, HTTPS y auditoría TLS
 
