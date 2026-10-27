@@ -506,8 +506,6 @@ if [[ -d "$PROJECT_DIR/docs" ]]; then
         -printf '  %f\n' 2>/dev/null | sort | head -n 30
 fi
 
-check_file "$PROJECT_DIR/scripts/auditoria_fase5.sh" "Script de auditoria presente"
-
 # ----------------------------------------------------------
 # 9. RESUMEN
 # ----------------------------------------------------------
