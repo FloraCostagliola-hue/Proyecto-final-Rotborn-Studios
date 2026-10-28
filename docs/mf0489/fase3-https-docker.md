@@ -20,19 +20,19 @@ Guía reproducible para publicar la aplicación WordPress de Rotborn Studios med
 
 La estructura sigue el contenido que se pide para `https-docker.md`. Cada apartado indica **qué se hace**, **los comandos** y **qué se obtuvo** en el laboratorio. El apartado 9 reúne el orden de ejecución completo.
 
-| Apartado | Contenido | Actividades |
+| Apartado | Contenido | |
 |---|---|---|
-| Requisitos | Estado inicial, certificados y copia de seguridad | 8 |
-| 1 | Arquitectura final y punto de terminación TLS | 9 |
-| 2 | Servicios, redes y puertos antes y después | 9, 10 |
-| 3 | Decisiones en Docker Compose y Nginx | 10, 11, 12 |
-| 4 | Rutas de los certificados y permisos | 8, 10 |
-| 5 | Resolución del nombre DNS en el cliente | 13 |
-| 6 | Pruebas de HTTP → HTTPS y de confianza TLS | 13 |
-| 7 | Funcionamiento de la aplicación y persistencia de datos | 12 |
-| 8 | Incidencias reales y soluciones | — |
-| 9 | Instrucciones de despliegue y verificación | — |
-| Anexos | A: copia de seguridad · B: scripts · C: repositorio y seguridad · D: ayuda · E: evidencias | — |
+| Requisitos | Estado inicial, certificados y copia de seguridad 
+| 1 | Arquitectura final y punto de terminación TLS 
+| 2 | Servicios, redes y puertos antes y después 
+| 3 | Decisiones en Docker Compose y Nginx 
+| 4 | Rutas de los certificados y permisos 
+| 5 | Resolución del nombre DNS en el cliente 
+| 6 | Pruebas de HTTP → HTTPS y de confianza TLS 
+| 7 | Funcionamiento de la aplicación y persistencia de datos 
+| 8 | Incidencias reales y soluciones 
+| 9 | Instrucciones de despliegue y verificación 
+| Anexos | A: copia de seguridad · B: scripts · C: repositorio y seguridad · D: ayuda · E: evidencias 
 
 ### Variables y valores del laboratorio
 
