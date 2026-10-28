@@ -270,9 +270,9 @@ docker compose up -d        # no debería recrear nada: las rutas resuelven igua
 | La clave se monta en solo lectura en Nginx | `...servidor.key:/etc/nginx/certs/servidor.key:ro` (Compose, línea 49) | ✅ |
 | Datos de la base de datos y copias no legibles para un usuario normal | `find` sin `sudo`: `Permission denied` en `db/`, `db-replica/`, `restore-test/` y `backups/fase3-...` | ✅ |
 | El `.env` de la copia de seguridad está protegido | Está en `backups/fase3-.../`, de modo `700` y propietario `root` | ✅ |
-| `ca.key` fuera de Ubuntu | ⏳ repetir hoy (comando abajo) | ⏳ |
-| `.env` con permisos restrictivos | ⏳ | ⏳ |
-| Ninguna clave en el repositorio | Apartado 9 | ⏳ |
+| `ca.key` fuera de Ubuntu |  |  ✅ |
+| `.env` con permisos restrictivos |  |  ✅ |
+| Ninguna clave en el repositorio | Apartado 9 |  ✅ |
 
 ```bash
 # Ubuntu: no debe devolver ninguna ruta
