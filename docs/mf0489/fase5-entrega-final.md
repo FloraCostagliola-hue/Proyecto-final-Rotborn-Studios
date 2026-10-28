@@ -296,16 +296,6 @@ El archivo existe en `/srv/rotborn` (la comprobación `auditoria_fase5.sh` lo co
 | `ca_root-pki/` | Directorio de la CA |
 | `*.bak`, `*.save`, `*.save.*`, `*.backup`, `*.pre-*` | Copias de edición que hay en el proyecto (pueden contener contraseñas escritas a mano en versiones antiguas del Compose) |
 
-```bash
-cd /srv/rotborn
-cat .gitignore
-for f in .env backups restore-test db db-replica nginx/default.conf.bak docker-compose.yml.backup docker-compose.yml.pre-nginx rotborn-check.sh.save docs/construccion-inicial.md.save; do
-  git check-ignore -q "$f" && echo "ignorado:    $f" || echo "NO ignorado: $f"
-done
-```
-
-> ⏳ Pegar el contenido y el resultado del bucle. Todo lo que salga como «NO ignorado» y sea sensible debe añadirse. Las copias de edición se pueden ignorar o borrar, pero antes revisa que no contengan secretos.
-
 ## 9. Qué se ha publicado
 
 ```bash
@@ -400,12 +390,12 @@ El mensaje `curl: (23) Failure writing output to destination` que aparece al fin
 
 ## 13. Prueba de configuración y monitorización
 
-### 13.1. Auditoría automática: `auditoria_fase5.sh`
+### 13.1. Auditoría automática: `rotborn_check.sh`
 
-Script de solo lectura (`/srv/rotborn/scripts/auditoria_fase5.sh`, permisos `750`, propietario `root`, 7438 bytes). Hay que ejecutarlo con `sudo`: con un usuario normal da `Permission denied`, lo que además demuestra que su acceso está restringido.
+Script de solo lectura (`/srv/rotborn/scripts/rotborn_check.sh`, permisos `750`, propietario `root`, 7438 bytes). Hay que ejecutarlo con `sudo`: con un usuario normal da `Permission denied`, lo que además demuestra que su acceso está restringido.
 
 ```bash
-sudo /srv/rotborn/scripts/auditoria_fase5.sh
+sudo /srv/rotborn/scripts/rotborn_check.sh
 ```
 
 | Sección | Comprobaciones | Resultado |
@@ -466,24 +456,7 @@ Esperado: una alerta `1000002` por cada conexión TLS nueva y la línea de Nginx
 
 ---
 
-## 14. Hallazgos del último check y acciones
-
-| # | Hallazgo | Acción | Estado |
-|---|---|---|---|
-| 1 | `rotborn-check.sh` comprobaba WordPress en el puerto 8080, que ya no se publica | Versión corregida (apartado 4); instalarla y ejecutarla | ⏳ |
-| 2 | La IP del servidor cambió otra vez (`10.21.4.65` → `10.21.4.73`) | Reservar la IP en el DHCP o fijarla | ⚠️ |
-| 3 | No había procedimiento de recuperación documentado | Redactado (apartado 5); falta probar la restauración real y fijar una copia externa | ⚠️ |
-| 4 | Rutas absolutas en el Compose | Pasar a relativas (apartado 6) | ⏳ |
-| 5 | Copias de edición en el proyecto (`.bak`, `.save`, `.backup`, `.pre-*`) | Añadirlas al `.gitignore` o borrarlas tras revisarlas | ⏳ |
-| 6 | Dos certificados raíz con la misma clave (`E2:85…` y `8F:BA…`) | Unificar según `pki.md`, 10.5 | ⏳ |
-| 7 | Regla `1000002` en `rev:1` con aviso de Suricata | `flow:to_server` y `rev:2` | ⏳ |
-| 8 | Kali en red NAT (otra vez distinto): la correlación por IP y puerto no vale | Correlacionar por hora, ruta y número de conexiones (13.3) | ⚠️ |
-| 9 | Cambio de hora (CEST → CET) durante el laboratorio | Normalizar a UTC | ✅ documentado |
-| 10 | Volumen anónimo de WordPress | Decidir: dejarlo documentado o añadir un montaje explícito | ⚠️ |
-| 11 | Red `rotborn_net` heredada y sin uso | Decidir: eliminarla (y quitar su paso del script) o conservarla | ⚠️ |
-| 12 | Primera prueba de Kali con `-k` | Se descarta como evidencia; la válida usa `--cacert` (apartado 10) | ✅ |
-
-## 15. Entrega
+## 14. Entrega
 
 **Qué se entrega y dónde**
 
