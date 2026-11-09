@@ -173,11 +173,10 @@ Por tanto, se ha comprobado el funcionamiento de la regla de detección HTTPS me
 
 ## 9. Evidencias gráficas
 
-Se incorporarán las siguientes capturas:
+- [reglas-locales.png](capturas/suricata/suricata-reglas-locales.png)
+- [validacion-suricata.png](capturas/suricata/suricata-validacion.png)
+- [estado-servicio.png](capturas/suricata/suricata-estado-servicio.png)
+- [prueba-https.png](capturas/suricata/suricata-prueba-https.png)
+- [alertas-https.png](capturas/suricata/suricata-alertas-https.png)
 
-- `capturas/suricata/reglas-locales.png`
-- `capturas/suricata/validacion-suricata.png`
-- `capturas/suricata/estado-servicio.png`
-- `capturas/suricata/conectividad-kali.png`
-- `capturas/suricata/prueba-https.png`
-- `capturas/suricata/alertas-https.png`
+
