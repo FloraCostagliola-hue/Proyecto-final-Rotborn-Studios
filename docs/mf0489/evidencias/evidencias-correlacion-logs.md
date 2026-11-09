@@ -66,3 +66,9 @@ Las direcciones IP y los puertos de origen y destino coinciden. Las marcas tempo
 ## Conclusión
 
 Las evidencias muestran la correlación de una misma conexión HTTPS observada por Nginx y Suricata. Coinciden la IP y el puerto de origen (`10.21.4.87:51724`), el destino (`10.21.4.47:443`) y las marcas temporales UTC, con una diferencia aproximada de un segundo.
+
+## Índice de evidencias
+
+- [1. Prueba HTTPS desde Kali](correlacion-logs/prueba-https-kali.png)
+- [2. Registro bruto de Nginx](correlacion-logs/registro-nginx.png)
+- [3. Alerta de Suricata](correlacion-logs/alerta-suricata.png)
