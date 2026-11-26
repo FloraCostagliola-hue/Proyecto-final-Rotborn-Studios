@@ -100,6 +100,13 @@ Documentación de la infraestructura de clave pública, la creación y validaci�
 
 ---
 
+### ☣️ MF0490 — Project ECHO — Rotborn Studios
+
+Documentación del desafío de ciberseguridad Project ECHO, desarrollado como un entorno CTF (Capture The Flag) dentro de la infraestructura ficticia de Rotborn Studios.
+
+- [🧫 Ficha pública del CTF — Project ECHO](./docs/MF0490/Ficha_pública_del_CTF.md)
+
+---
 
 
 🧟 **ROTBORN STUDIOS**
