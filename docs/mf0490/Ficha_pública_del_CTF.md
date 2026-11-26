@@ -1,8 +1,10 @@
-# PROJECT ECHO – ROTBORN STUDIOS
+# 🧟 PROJECT ECHO – ROTBORN STUDIOS
 
-## Ficha pública del CTF
+## ☣️ Ficha pública del CTF
 
-### Descripción del reto
+---
+
+### 🏚️ Descripción del reto
 
 Bienvenido a Rotborn Studios.
 
@@ -12,45 +14,57 @@ Tu misión será explorar la infraestructura tecnológica de la organización, i
 
 Cada detalle puede ser importante. Analiza el entorno, sigue las pistas y demuestra tus habilidades en ciberseguridad.
 
-### Objetivos del reto
+---
 
-- Realizar un reconocimiento del sistema objetivo.
-- Identificar los servicios y aplicaciones expuestos.
-- Investigar el entorno web disponible.
-- Detectar y aprovechar vulnerabilidades de seguridad.
-- Obtener la bandera de usuario (`user.txt`).
-- Conseguir privilegios de administrador y obtener la bandera de root (`root.txt`).
+### 🎯 Objetivos del reto
 
-### Categorías
+- 🔎 Realizar un reconocimiento del sistema objetivo.
+- 🌐 Identificar los servicios y aplicaciones expuestos.
+- 🕸️ Investigar el entorno web disponible.
+- ⚠️ Detectar y aprovechar vulnerabilidades de seguridad.
+- 🚩 Obtener la bandera de usuario (`user.txt`).
+- 🔐 Conseguir privilegios de administrador y obtener la bandera de root (`root.txt`).
 
-- Linux.
-- Enumeración de redes.
-- Enumeración web.
-- Seguridad de sistemas.
-- Escalada de privilegios.
+---
 
-### Conocimientos recomendados
+### 🧪 Categorías
 
-- Manejo básico de sistemas Linux.
-- Reconocimiento y enumeración de servicios.
-- Uso de herramientas de análisis de red.
-- Exploración de aplicaciones web.
-- Gestión de permisos en Linux.
-- Fundamentos de escalada de privilegios.
+- 🐧 Linux.
+- 🌐 Enumeración de redes.
+- 🕸️ Enumeración web.
+- 🛡️ Seguridad de sistemas.
+- ⬆️ Escalada de privilegios.
 
-### Información del laboratorio
+---
+
+### 🧠 Conocimientos recomendados
+
+- 💻 Manejo básico de sistemas Linux.
+- 🔎 Reconocimiento y enumeración de servicios.
+- 📡 Uso de herramientas de análisis de red.
+- 🌐 Exploración de aplicaciones web.
+- 🔑 Gestión de permisos en Linux.
+- ⬆️ Fundamentos de escalada de privilegios.
+
+---
+
+### 🧬 Información del laboratorio
 
 | Característica | Información |
 |---|---|
-| Nombre | Project ECHO |
-| Organización ficticia | Rotborn Studios |
-| Plataforma | TryHackMe |
-| Sistema objetivo | Linux |
-| Tipo de reto | Boot2Root |
-| Dificultad | Por determinar |
+| 🧟 Nombre | Project ECHO |
+| 🏢 Organización ficticia | Rotborn Studios |
+| 🎮 Plataforma | TryHackMe |
+| 🐧 Sistema objetivo | Linux |
+| 🚩 Tipo de reto | Boot2Root |
+| ⚙️ Dificultad | Por determinar |
 
-### Mensaje final
+---
+
+### ☠️ Mensaje final
 
 **La verdad está oculta en el sistema. Encuentra las evidencias, sigue el rastro y descubre qué ocurrió en Rotborn Studios.**
 
-Buena suerte, operador.
+🧟 Buena suerte, operador.
+
+---
