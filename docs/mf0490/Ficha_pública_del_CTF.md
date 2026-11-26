@@ -57,7 +57,7 @@ Cada detalle puede ser importante. Analiza el entorno, sigue las pistas y demues
 | 🎮 Plataforma | TryHackMe |
 | 🐧 Sistema objetivo | Linux |
 | 🚩 Tipo de reto | Boot2Root |
-| ⚙️ Dificultad | Por determinar |
+| ⚙️ Dificultad | Media |
 
 ---
 
